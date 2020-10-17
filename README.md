@@ -1,6 +1,7 @@
 # Simply-imitated-SQS-for-testing
 
 [![npm version](https://badge.fury.io/js/%40abetomo%2Fsimply-imitated-sqs.svg)](https://badge.fury.io/js/%40abetomo%2Fsimply-imitated-sqs)
+![Test](https://github.com/abetomo/Simply-imitated-SQS-for-testing/workflows/Test/badge.svg)
 
 Simply imitated SQS for testing
 
