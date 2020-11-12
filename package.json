@@ -28,7 +28,7 @@
   "homepage": "https://github.com/abetomo/Simply-imitated-SQS-for-testing#readme",
   "devDependencies": {
     "jest": "^26.5.0",
-    "standard": "^14.3.4"
+    "standard": "^16.0.2"
   },
   "dependencies": {
     "@abetomo/vsq": "^3.0.3"

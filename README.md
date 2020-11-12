@@ -96,7 +96,7 @@ const sqs = new AWS.SQS({
 // Existing code remains the same except booting the server
 // and reassigning the `queueUrl`.
 const server = new (require('@abetomo/simply-imitated-sqs').Server)()
-var queueUrl = 'https://sqs.us-east-1.amazonaws.com/xxx/test'
+let queueUrl = 'https://sqs.us-east-1.amazonaws.com/xxx/test'
 if (process.env.LOCAL_TEST === '1') {
   /// !!! Server start and `queueUrl` reassignment
   queueUrl = server.run({
