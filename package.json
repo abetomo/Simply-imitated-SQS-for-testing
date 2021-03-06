@@ -21,7 +21,7 @@
     "mock"
   ],
   "author": "abetomo",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/abetomo/Simply-imitated-SQS-for-testing/issues"
   },
