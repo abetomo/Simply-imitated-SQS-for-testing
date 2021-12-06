@@ -8,13 +8,18 @@ Simply imitated SQS for testing
 Simple SQS class that can be used for local test.
 You do not even need to use Docker.
 
+You can send, receive and delete data, so you can do better unit tests than with mocks.
+
 ## install
+
 ```
-% npm install @abetomo/simply-imitated-sqs
+% npm install -D @abetomo/simply-imitated-sqs
 ```
 
 ## Application example
+
 ### Replace `sqs` instance
+
 ```javascript
 'use strict'
 
@@ -80,6 +85,7 @@ Promise.resolve().then(() => {
 ```
 
 ### Starting http server
+
 ```javascript
 'use strict'
 
@@ -148,6 +154,7 @@ Promise.resolve().then(() => {
 ```
 
 ### Execution
+
 ```
 # Access AWS.
 % node example.js
