@@ -21,17 +21,16 @@ You can send, receive and delete data, so you can do better unit tests than with
 ### Replace `sqs` instance
 
 ```javascript
-'use strict'
-
 // !!!
 // If the value of the environment variable LOCAL_TEST is set,
 // it will be tested with SimplyImitatedSQS
 
-const AWS = require('aws-sdk')
+import AWS from 'aws-sdk'
+import SimplyImitatedSQS from '@abetomo/simply-imitated-sqs'
+
 const sqs = (() => {
   // !!! If environment variable is set, use SimplyImitatedSQS
   if (process.env.LOCAL_TEST === '1') {
-    const SimplyImitatedSQS = require('@abetomo/simply-imitated-sqs')
     return new SimplyImitatedSQS()
   }
   return new AWS.SQS({
@@ -43,57 +42,56 @@ const sqs = (() => {
 // Once you create the sqs instance, you do not need to modify any other code.
 const queueUrl = 'https://sqs.us-east-1.amazonaws.com/xxx/test'
 
-Promise.resolve().then(() => {
+// sendMessage
+try {
   const params = {
     QueueUrl: queueUrl,
     MessageBody: 'hoge' + (new Date()).toString()
   }
-  return new Promise(resolve => {
-    sqs.sendMessage(params, (err, data) => {
-      if (err) console.error(err)
-      console.log('+++\n%s\n+++', JSON.stringify(data, null, ' '))
-      resolve()
-    })
-  })
-}).then(() => {
+  const sendRes = await sqs.sendMessage(params).promise()
+  console.log('+++\n%s\n+++', JSON.stringify(sendRes, null, ' '))
+} catch (err) {
+  console.error(err)
+}
+
+// receiveMessage
+let message = null
+try {
   const params = { QueueUrl: queueUrl }
-  return new Promise(resolve => {
-    sqs.receiveMessage(params, (err, data) => {
-      if (err) console.error(err)
-      console.log('===\n%s\n===', JSON.stringify(data, null, ' '))
-      resolve(data)
-    })
-  })
-}).then(data => {
+  message = await sqs.receiveMessage(params).promise()
+  console.log('===\n%s\n===', JSON.stringify(message, null, ' '))
+} catch (err) {
+  console.error(err)
+}
+
+// deleteMessage
+try {
   const params = {
     QueueUrl: queueUrl,
-    ReceiptHandle: data.Messages[0].ReceiptHandle
+    ReceiptHandle: message.Messages[0].ReceiptHandle
   }
-  return new Promise(resolve => {
-    sqs.deleteMessage(params, (err, data) => {
-      if (err) console.error(err)
-      console.log('---\n%s\n---', JSON.stringify(data, null, ' '))
-      resolve()
-    })
-  })
-}).then(() => {
-  if (process.env.LOCAL_TEST === '1') {
-    // !!! SimplyImitatedSQS creates a file to store the queue, so remove it.
-    sqs.clear()
-  }
-})
+  const delRes = await sqs.deleteMessage(params).promise()
+  console.log('---\n%s\n---', JSON.stringify(delRes, null, ' '))
+} catch (err) {
+  console.error(err)
+}
+
+// !!! SimplyImitatedSQS creates a file to store the queue, so remove it.
+if (process.env.LOCAL_TEST === '1') {
+  sqs.clear()
+}
 ```
 
 ### Starting http server
 
 ```javascript
-'use strict'
-
 // !!!
 // If the value of the environment variable LOCAL_TEST is set,
 // it will be tested with SimplyImitatedSQS
+//
+import AWS from 'aws-sdk'
+import { Server } from '@abetomo/simply-imitated-sqs'
 
-const AWS = require('aws-sdk')
 const sqs = new AWS.SQS({
   region: 'us-east-1',
   apiVersion: '2012-11-05'
@@ -101,7 +99,7 @@ const sqs = new AWS.SQS({
 
 // Existing code remains the same except booting the server
 // and reassigning the `queueUrl`.
-const server = new (require('@abetomo/simply-imitated-sqs').Server)()
+const server = new Server()
 let queueUrl = 'https://sqs.us-east-1.amazonaws.com/xxx/test'
 if (process.env.LOCAL_TEST === '1') {
   /// !!! Server start and `queueUrl` reassignment
@@ -111,46 +109,45 @@ if (process.env.LOCAL_TEST === '1') {
   })
 }
 
-Promise.resolve().then(() => {
+// sendMessage
+try {
   const params = {
     QueueUrl: queueUrl,
     MessageBody: 'hoge' + (new Date()).toString()
   }
-  return new Promise(resolve => {
-    sqs.sendMessage(params, (err, data) => {
-      if (err) console.error(err)
-      console.log('+++\n%s\n+++', JSON.stringify(data, null, ' '))
-      resolve()
-    })
-  })
-}).then(() => {
+  const res = await sqs.sendMessage(params).promise()
+  console.log('+++\n%s\n+++', JSON.stringify(res, null, ' '))
+} catch (err) {
+  console.error(err)
+}
+
+// receiveMessage
+let message = null
+try {
   const params = { QueueUrl: queueUrl }
-  return new Promise(resolve => {
-    sqs.receiveMessage(params, (err, data) => {
-      if (err) console.error(err)
-      console.log('===\n%s\n===', JSON.stringify(data, null, ' '))
-      resolve(data)
-    })
-  })
-}).then(data => {
+  message = await sqs.receiveMessage(params).promise()
+  console.log('===\n%s\n===', JSON.stringify(message, null, ' '))
+} catch (err) {
+  console.error(err)
+}
+
+// deleteMessage
+try {
   const params = {
     QueueUrl: queueUrl,
-    ReceiptHandle: data.Messages[0].ReceiptHandle
+    ReceiptHandle: message.Messages[0].ReceiptHandle
   }
-  return new Promise(resolve => {
-    sqs.deleteMessage(params, (err, data) => {
-      if (err) console.error(err)
-      console.log('---\n%s\n---', JSON.stringify(data, null, ' '))
-      resolve()
-    })
-  })
-}).then(() => {
-  if (process.env.LOCAL_TEST === '1') {
-    // !!! Finally shutdown the server
-    console.log('server shutdown')
-    server.close()
-  }
-})
+  const res = await sqs.deleteMessage(params).promise()
+  console.log('---\n%s\n---', JSON.stringify(res, null, ' '))
+} catch (err) {
+  console.error(err)
+}
+
+if (process.env.LOCAL_TEST === '1') {
+  // !!! Finally shutdown the server
+  console.log('server shutdown')
+  server.close()
+}
 ```
 
 ### Execution
