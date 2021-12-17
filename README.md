@@ -39,42 +39,9 @@ const sqs = (() => {
   })
 })()
 
-// Once you create the sqs instance, you do not need to modify any other code.
-const queueUrl = 'https://sqs.us-east-1.amazonaws.com/xxx/test'
-
-// sendMessage
-try {
-  const params = {
-    QueueUrl: queueUrl,
-    MessageBody: 'hoge' + (new Date()).toString()
-  }
-  const sendRes = await sqs.sendMessage(params).promise()
-  console.log('+++\n%s\n+++', JSON.stringify(sendRes, null, ' '))
-} catch (err) {
-  console.error(err)
-}
-
-// receiveMessage
-let message = null
-try {
-  const params = { QueueUrl: queueUrl }
-  message = await sqs.receiveMessage(params).promise()
-  console.log('===\n%s\n===', JSON.stringify(message, null, ' '))
-} catch (err) {
-  console.error(err)
-}
-
-// deleteMessage
-try {
-  const params = {
-    QueueUrl: queueUrl,
-    ReceiptHandle: message.Messages[0].ReceiptHandle
-  }
-  const delRes = await sqs.deleteMessage(params).promise()
-  console.log('---\n%s\n---', JSON.stringify(delRes, null, ' '))
-} catch (err) {
-  console.error(err)
-}
+//
+// do something
+//
 ```
 
 ### Starting http server
@@ -116,27 +83,9 @@ try {
   console.error(err)
 }
 
-// receiveMessage
-let message = null
-try {
-  const params = { QueueUrl: queueUrl }
-  message = await sqs.receiveMessage(params).promise()
-  console.log('===\n%s\n===', JSON.stringify(message, null, ' '))
-} catch (err) {
-  console.error(err)
-}
-
-// deleteMessage
-try {
-  const params = {
-    QueueUrl: queueUrl,
-    ReceiptHandle: message.Messages[0].ReceiptHandle
-  }
-  const res = await sqs.deleteMessage(params).promise()
-  console.log('---\n%s\n---', JSON.stringify(res, null, ' '))
-} catch (err) {
-  console.error(err)
-}
+//
+// do something
+//
 
 if (process.env.LOCAL_TEST === '1') {
   // !!! Finally shutdown the server
