@@ -53,11 +53,6 @@ Promise.resolve().then(() => {
       resolve()
     })
   })
-}).then(() => {
-  if (process.env.LOCAL_TEST === '1') {
-    // !!! SimplyImitatedSQS creates a file to store the queue, so remove it.
-    sqs.clear()
-  }
 })
 
 /*

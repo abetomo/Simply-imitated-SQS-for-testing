@@ -52,8 +52,3 @@ try {
 } catch (err) {
   console.error(err)
 }
-
-// !!! SimplyImitatedSQS creates a file to store the queue, so remove it.
-if (process.env.LOCAL_TEST === '1') {
-  sqs.clear()
-}
