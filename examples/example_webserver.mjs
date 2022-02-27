@@ -2,6 +2,7 @@
 // If the value of the environment variable LOCAL_TEST is set,
 // it will be tested with SimplyImitatedSQS
 //
+const process = require('process')
 import AWS from 'aws-sdk'
 import { Server } from '@abetomo/simply-imitated-sqs'
 
